@@ -1,27 +1,27 @@
 package fr.uit.univparis8.tpair.tpair1;
 
 import java.io.*;
+
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
-    private String message;
-
-    public void init() {
-        message = "Hello World!";
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
+        response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
-    }
 
-    public void destroy() {
+        String nom = request.getParameter("nom");
+
+        out.println("<!DOCTYPE html><html><body>");
+
+        if (nom != null && !nom.trim().isEmpty()) {
+            out.println("<h1>Bonjour " + nom + "</h1>");
+        } else {
+            out.println("<h1>Aucun nom reçu</h1>");
+        }
+
+        out.println("</body></html>");
     }
 }

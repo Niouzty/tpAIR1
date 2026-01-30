@@ -1,12 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <html>
 <head>
-  <title>JSP - Hello World</title>
+    <title>TP AIR</title>
 </head>
 <body>
-<h1><%= "Hello World!" %></h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+
+<h2>Accueil TP Annonces</h2>
+
+<ul>
+    <li><a href="AnnonceAdd">Ajouter une annonce</a></li>
+    <li><a href="AnnonceList">Voir les annonces</a></li>
+    <li><a href="formulaire.jsp">Formulaire TP 1</a></li>
+</ul>
+
 </body>
 </html>
