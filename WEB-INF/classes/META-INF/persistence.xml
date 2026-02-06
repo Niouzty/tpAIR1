@@ -15,6 +15,7 @@
             <property name="jakarta.persistence.jdbc.password" value="9q9g6Gvv"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
+            <property name="hibernate.default_schema" value="MasterAnnonce"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>

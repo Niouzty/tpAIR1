@@ -1,41 +1,42 @@
 package fr.uit.univparis8.tpair.tpair1;
 
-import fr.uit.univparis8.tpair.tpair1.dao.AnnonceDAO;
 import fr.uit.univparis8.tpair.tpair1.model.Annonce;
-import jakarta.servlet.*;
+import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
+import fr.uit.univparis8.tpair.tpair1.service.ValidationException;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+
 import java.io.IOException;
 
 @WebServlet("/AnnonceAdd")
 public class AnnonceAddServlet extends HttpServlet {
 
-    private final AnnonceDAO dao = new AnnonceDAO();
+    private final AnnonceService service = new AnnonceService();
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/AnnonceAdd.jsp").forward(req, resp);
     }
 
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String title = req.getParameter("title");
-        String description = req.getParameter("description");
-        String adress = req.getParameter("adress");
-        String mail = req.getParameter("mail");
-
-        if (title.isEmpty() || description.isEmpty() || adress.isEmpty() || mail.isEmpty()) {
-            req.setAttribute("error", "Tous les champs sont obligatoires");
-            req.getRequestDispatcher("/AnnonceAdd.jsp").forward(req, resp);
-            return;
-        }
-
         Annonce a = new Annonce();
-        a.setTitle(title);
-        a.setDescription(description);
-        a.setAdress(adress);
-        a.setMail(mail);
+        a.setTitle(req.getParameter("title"));
+        a.setDescription(req.getParameter("description"));
+        a.setAdress(req.getParameter("adress"));
+        a.setMail(req.getParameter("mail"));
 
-        dao.create(a);
-        resp.sendRedirect("AnnonceList");
+        try {
+            // la validation est dans le service
+            service.create(a);
+            resp.sendRedirect("AnnonceList");
+        } catch (ValidationException ve) {
+            // erreurs + conservation valeurs
+            req.setAttribute("errors", ve.getErrors());
+            req.setAttribute("form", a);
+            req.getRequestDispatcher("/AnnonceAdd.jsp").forward(req, resp);
+        }
     }
 }

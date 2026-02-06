@@ -1,29 +1,60 @@
 package fr.uit.univparis8.tpair.tpair1.model;
 
-import java.sql.Timestamp;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "annonce")
 public class Annonce {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Size(max = 64)
+    @Column(length = 64, nullable = false)
     private String title;
+
+    @NotBlank
+    @Size(max = 256)
+    @Column(length = 256, nullable = false)
     private String description;
+
+    @NotBlank
+    @Size(max = 64)
+    @Column(length = 64, nullable = false)
     private String adress;
+
+    @NotBlank
+    @Email
+    @Size(max = 64)
+    @Column(length = 64, nullable = false)
     private String mail;
-    private Timestamp date;
+
+    private LocalDateTime date = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AnnonceStatus status = AnnonceStatus.DRAFT;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     public Annonce() {}
 
-    public Annonce(int id, String title, String description, String adress, String mail, Timestamp date) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.adress = adress;
-        this.mail = mail;
-        this.date = date;
-    }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -37,6 +68,15 @@ public class Annonce {
     public String getMail() { return mail; }
     public void setMail(String mail) { this.mail = mail; }
 
-    public Timestamp getDate() { return date; }
-    public void setDate(Timestamp date) { this.date = date; }
+    public LocalDateTime getDate() { return date; }
+    public void setDate(LocalDateTime date) { this.date = date; }
+
+    public AnnonceStatus getStatus() { return status; }
+    public void setStatus(AnnonceStatus status) { this.status = status; }
+
+    public User getAuthor() { return author; }
+    public void setAuthor(User author) { this.author = author; }
+
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 }

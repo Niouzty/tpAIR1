@@ -5,8 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/AnnonceDelete")
-public class AnnonceDeleteServlet extends HttpServlet {
+@WebServlet("/AnnonceArchive")
+public class AnnonceArchiveServlet extends HttpServlet {
 
     private final AnnonceService service = new AnnonceService();
 
@@ -15,7 +15,7 @@ public class AnnonceDeleteServlet extends HttpServlet {
 
         try {
             Long id = Long.parseLong(req.getParameter("id"));
-            service.delete(id);
+            service.archive(id);
         } catch (Exception ignored) {}
 
         resp.sendRedirect("AnnonceList");
