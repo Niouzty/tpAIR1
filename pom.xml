@@ -49,8 +49,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-<<<<<<< HEAD
-=======
 
         <dependency>
             <groupId>org.mockito</groupId>
@@ -72,8 +70,7 @@
             <version>3.24.1</version>
             <scope>test</scope>
         </dependency>
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
-    </dependencies>
+
 
 
 
