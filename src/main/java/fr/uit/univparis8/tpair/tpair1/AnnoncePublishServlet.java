@@ -15,9 +15,6 @@ public class AnnoncePublishServlet extends HttpServlet {
 
         try {
             Long id = Long.parseLong(req.getParameter("id"));
-<<<<<<< HEAD
-            service.publish(id);
-=======
 
             // Récupérer l'ID de l'utilisateur connecté
             HttpSession session = req.getSession();
@@ -25,7 +22,6 @@ public class AnnoncePublishServlet extends HttpServlet {
 
             // Passer userId au service pour vérifier l'ownership
             service.publish(id, userId);
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
         } catch (Exception ignored) {}
 
         resp.sendRedirect("AnnonceList");

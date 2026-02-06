@@ -43,3 +43,5 @@ ia/
 # Local docs / IA
 FIX_LOGIN.md
 ia/
+
+.idea/

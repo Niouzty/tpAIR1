@@ -11,14 +11,11 @@ public class ValidationException extends RuntimeException {
         this.errors = errors;
     }
 
-<<<<<<< HEAD
-=======
     public ValidationException(String message) {
         super(message);
         this.errors = null;
     }
 
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
     public Map<String, String> getErrors() {
         return errors;
     }

@@ -15,15 +15,11 @@ public class AnnonceArchiveServlet extends HttpServlet {
 
         try {
             Long id = Long.parseLong(req.getParameter("id"));
-<<<<<<< HEAD
-            service.archive(id);
-=======
 
             HttpSession session = req.getSession();
             Long userId = (Long) session.getAttribute("userId");
 
             service.archive(id, userId);
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
         } catch (Exception ignored) {}
 
         resp.sendRedirect("AnnonceList");

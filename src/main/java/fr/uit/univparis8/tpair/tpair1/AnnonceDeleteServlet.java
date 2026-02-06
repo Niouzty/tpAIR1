@@ -15,9 +15,6 @@ public class AnnonceDeleteServlet extends HttpServlet {
 
         try {
             Long id = Long.parseLong(req.getParameter("id"));
-<<<<<<< HEAD
-            service.delete(id);
-=======
 
             // Récupérer l'ID de l'utilisateur connecté
             HttpSession session = req.getSession();
@@ -25,7 +22,6 @@ public class AnnonceDeleteServlet extends HttpServlet {
 
             // Passer userId au service pour vérifier l'ownership
             service.delete(id, userId);
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
         } catch (Exception ignored) {}
 
         resp.sendRedirect("AnnonceList");

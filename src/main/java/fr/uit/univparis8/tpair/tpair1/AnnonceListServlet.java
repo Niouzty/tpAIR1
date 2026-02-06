@@ -1,9 +1,5 @@
 package fr.uit.univparis8.tpair.tpair1;
 
-<<<<<<< HEAD
-import fr.uit.univparis8.tpair.tpair1.dao.AnnonceRepository;
-=======
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
 import fr.uit.univparis8.tpair.tpair1.model.AnnonceStatus;
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
 import jakarta.servlet.*;
@@ -19,12 +15,9 @@ public class AnnonceListServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-<<<<<<< HEAD
-=======
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=UTF-8");
 
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
         String q = req.getParameter("q");
 
         Long catId = null;
@@ -41,16 +34,12 @@ public class AnnonceListServlet extends HttpServlet{
 
         int size = 5;
 
-<<<<<<< HEAD
-        req.setAttribute("annonces", service.search(q, catId, status, page, size));
-=======
         // Récupérer l'ID de l'utilisateur connecté de la session
         HttpSession session = req.getSession();
         Long userId = (Long) session.getAttribute("userId");
 
         // Filtrer par utilisateur connecté
         req.setAttribute("annonces", service.searchMyAnnonces(userId, q, catId, status, page, size));
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
         req.setAttribute("page", page);
         req.setAttribute("q", q);
         req.setAttribute("cat", cat);

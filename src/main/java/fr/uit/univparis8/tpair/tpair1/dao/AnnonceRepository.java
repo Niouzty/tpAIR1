@@ -71,8 +71,6 @@ public class AnnonceRepository {
 
         return q.getResultList();
     }
-<<<<<<< HEAD
-=======
 
     // Recherche les annonces d'un utilisateur spécifique
     public List<Annonce> searchByAuthor(EntityManager em,
@@ -120,5 +118,4 @@ public class AnnonceRepository {
 
         return q.getResultList();
     }
->>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
 }
