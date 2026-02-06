@@ -71,4 +71,54 @@ public class AnnonceRepository {
 
         return q.getResultList();
     }
+<<<<<<< HEAD
+=======
+
+    // Recherche les annonces d'un utilisateur spécifique
+    public List<Annonce> searchByAuthor(EntityManager em,
+                                        Long authorId,
+                                        String keyword,
+                                        Long categoryId,
+                                        AnnonceStatus status,
+                                        int page,
+                                        int size) {
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT a FROM Annonce a WHERE a.author.id = :authorId "
+        );
+
+        if (keyword != null && !keyword.isBlank()) {
+            jpql.append("AND (LOWER(a.title) LIKE :kw OR LOWER(a.description) LIKE :kw) ");
+        }
+        if (categoryId != null) {
+            jpql.append("AND a.category.id = :catId ");
+        }
+        if (status != null) {
+            jpql.append("AND a.status = :status ");
+        }
+
+        jpql.append("ORDER BY a.date DESC");
+
+        TypedQuery<Annonce> q = em.createQuery(jpql.toString(), Annonce.class);
+        q.setParameter("authorId", authorId);
+
+        if (keyword != null && !keyword.isBlank()) {
+            q.setParameter("kw", "%" + keyword.toLowerCase() + "%");
+        }
+        if (categoryId != null) {
+            q.setParameter("catId", categoryId);
+        }
+        if (status != null) {
+            q.setParameter("status", status);
+        }
+
+        int safePage = Math.max(1, page);
+        int safeSize = Math.max(1, size);
+
+        q.setFirstResult((safePage - 1) * safeSize);
+        q.setMaxResults(safeSize);
+
+        return q.getResultList();
+    }
+>>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
 }

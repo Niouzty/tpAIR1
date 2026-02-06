@@ -16,11 +16,18 @@ public class AnnonceAddServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         req.getRequestDispatcher("/AnnonceAdd.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<<<<<<< HEAD
+=======
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+>>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
 
         Annonce a = new Annonce();
         a.setTitle(req.getParameter("title"));
@@ -29,8 +36,17 @@ public class AnnonceAddServlet extends HttpServlet {
         a.setMail(req.getParameter("mail"));
 
         try {
+<<<<<<< HEAD
             // la validation est dans le service
             service.create(a);
+=======
+            // Récupérer l'ID de l'utilisateur connecté
+            HttpSession session = req.getSession();
+            Long userId = (Long) session.getAttribute("userId");
+
+            // Passer userId au service
+            service.create(a, userId);
+>>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
             resp.sendRedirect("AnnonceList");
         } catch (ValidationException ve) {
             // erreurs + conservation valeurs
@@ -39,4 +55,9 @@ public class AnnonceAddServlet extends HttpServlet {
             req.getRequestDispatcher("/AnnonceAdd.jsp").forward(req, resp);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> 67b61b3 (tp2 - update services, servlets and tests)
