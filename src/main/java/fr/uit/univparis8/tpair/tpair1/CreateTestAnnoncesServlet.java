@@ -3,18 +3,10 @@ package fr.uit.univparis8.tpair.tpair1;
 import fr.uit.univparis8.tpair.tpair1.model.Annonce;
 import fr.uit.univparis8.tpair.tpair1.model.AnnonceStatus;
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
-//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-/**
- * Servlet pour créer des annonces de test avec le statut PUBLISHED
- * DÉSACTIVÉ : TP3 utilise une API REST pure
- * Accès : http://localhost:8080/tpAIR1/CreateTestAnnonces
- */
-// @WebServlet("/CreateTestAnnonces")
 public class CreateTestAnnoncesServlet extends HttpServlet {
 
     private final AnnonceService annonceService = new AnnonceService();
@@ -24,7 +16,6 @@ public class CreateTestAnnoncesServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         try {
-            // Créer une annonce de test
             Annonce a1 = new Annonce();
             a1.setTitle("Appartement 3 pièces à Paris");
             a1.setDescription("Bel appartement rénové en plein cœur de Paris, proche métro, lumineux et spacieux");
@@ -33,8 +24,6 @@ public class CreateTestAnnoncesServlet extends HttpServlet {
             a1.setStatus(AnnonceStatus.PUBLISHED);
 
             Annonce created1 = annonceService.create(a1, 1L);
-
-            // Créer une deuxième annonce
             Annonce a2 = new Annonce();
             a2.setTitle("Studio meublé centre-ville");
             a2.setDescription("Studio moderne, entièrement meublé, idéal pour étudiant ou jeune professionnel");
@@ -43,8 +32,6 @@ public class CreateTestAnnoncesServlet extends HttpServlet {
             a2.setStatus(AnnonceStatus.PUBLISHED);
 
             Annonce created2 = annonceService.create(a2, 1L);
-
-            // Créer une troisième annonce
             Annonce a3 = new Annonce();
             a3.setTitle("Maison avec jardin en banlieue");
             a3.setDescription("Maison familiale avec jardin, garage, parfait pour famille avec enfants");

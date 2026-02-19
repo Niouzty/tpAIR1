@@ -1,8 +1,6 @@
 package fr.uit.univparis8.tpair.tpair1.dto;
 
-/**
- * DTO pour la réponse de login
- */
+
 public class LoginResponse {
     public String token;
     public Long userId;

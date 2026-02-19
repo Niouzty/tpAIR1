@@ -3,12 +3,8 @@ package fr.uit.univparis8.tpair.tpair1;
 import fr.uit.univparis8.tpair.tpair1.model.AnnonceStatus;
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
 import jakarta.servlet.*;
-//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-
-// DÉSACTIVÉ : TP3 utilise une API REST pure
-// @WebServlet("/AnnonceList")
 public class AnnonceListServlet extends HttpServlet{
 
     private final AnnonceService service = new AnnonceService();
@@ -27,24 +23,35 @@ public class AnnonceListServlet extends HttpServlet{
 
         AnnonceStatus status = null;
         String st = req.getParameter("status");
-        if (st != null && !st.isBlank()) status = AnnonceStatus.valueOf(st);
+        if (st != null && !st.isBlank() && !"ALL".equalsIgnoreCase(st)) {
+            status = AnnonceStatus.valueOf(st);
+        }
 
-        int page = 1;
+        int page = 0;
         String p = req.getParameter("page");
-        if (p != null && !p.isBlank()) page = Integer.parseInt(p);
+        if (p != null && !p.isBlank()) {
+            page = Integer.parseInt(p);
+        }
+        if (page < 0) {
+            page = 0;
+        }
 
-        int size = 5;
-
-        // Récupérer l'ID de l'utilisateur connecté de la session
+        int size = 10;
+        String s = req.getParameter("size");
+        if (s != null && !s.isBlank()) {
+            size = Integer.parseInt(s);
+        }
+        if (size <= 0) {
+            size = 10;
+        }
         HttpSession session = req.getSession();
         Long userId = (Long) session.getAttribute("userId");
-
-        // Filtrer par utilisateur connecté
         req.setAttribute("annonces", service.searchMyAnnonces(userId, q, catId, status, page, size));
         req.setAttribute("page", page);
+        req.setAttribute("size", size);
         req.setAttribute("q", q);
         req.setAttribute("cat", cat);
-        req.setAttribute("status", st);
+        req.setAttribute("status", (st == null || st.isBlank()) ? "ALL" : st);
 
         req.getRequestDispatcher("/AnnonceList.jsp").forward(req, resp);
     }

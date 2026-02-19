@@ -2,9 +2,7 @@ package fr.uit.univparis8.tpair.tpair1.dto;
 
 import java.util.List;
 
-/**
- * DTO pour les réponses paginées
- */
+
 public class PagedResponse<T> {
     
     public List<T> content;

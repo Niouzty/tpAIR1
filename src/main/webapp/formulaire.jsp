@@ -9,7 +9,7 @@
 
 <h2>Formulaire de saisie</h2>
 
-<form method="get" action="formulaire-servlet">
+<form method="get" action="Formulaire">
     Nom :
     <input type="text" name="nom" required />
     <br><br>

@@ -3,6 +3,123 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnoncePublicServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnoncePublicServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnoncePublicServlet</servlet-name>
+        <url-pattern>/AnnoncePublic</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnonceListServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnonceListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnonceListServlet</servlet-name>
+        <url-pattern>/AnnonceList</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnonceAddServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnonceAddServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnonceAddServlet</servlet-name>
+        <url-pattern>/AnnonceAdd</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnonceUpdateServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnonceUpdateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnonceUpdateServlet</servlet-name>
+        <url-pattern>/AnnonceUpdate</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnonceDeleteServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnonceDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnonceDeleteServlet</servlet-name>
+        <url-pattern>/AnnonceDelete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnoncePublishServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnoncePublishServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnoncePublishServlet</servlet-name>
+        <url-pattern>/AnnoncePublish</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnnonceArchiveServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.AnnonceArchiveServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AnnonceArchiveServlet</servlet-name>
+        <url-pattern>/AnnonceArchive</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FormulaireServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.FormulaireServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FormulaireServlet</servlet-name>
+        <url-pattern>/Formulaire</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateTestAnnoncesServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.CreateTestAnnoncesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateTestAnnoncesServlet</servlet-name>
+        <url-pattern>/CreateTestAnnonces</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HelloServlet</servlet-name>
+        <servlet-class>fr.uit.univparis8.tpair.tpair1.HelloServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloServlet</servlet-name>
+        <url-pattern>/Hello</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

@@ -4,22 +4,22 @@ import fr.uit.univparis8.tpair.tpair1.dto.ErrorResponse;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Partie II - Exercice 4 : Gestion des erreurs REST
- * Mapper pour les exceptions non gérées (erreurs 500)
- */
+
 @Provider
 public class GeneralExceptionMapper implements ExceptionMapper<Exception> {
 
+    private static final Logger log = LoggerFactory.getLogger(GeneralExceptionMapper.class);
+
     @Override
     public Response toResponse(Exception exception) {
-        // Log l'exception pour le diagnostic
-        exception.printStackTrace();
+        log.error("Unhandled API exception", exception);
 
         ErrorResponse response = new ErrorResponse(
                 500,
-                "Erreur interne du serveur : " + exception.getMessage()
+                "Erreur interne du serveur"
         );
 
         return Response

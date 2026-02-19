@@ -2,10 +2,7 @@ package fr.uit.univparis8.tpair.tpair1.security;
 
 import java.security.Principal;
 
-/**
- * Partie III - Exercice 5 : Authentification stateless
- * Principal représentant un utilisateur authentifié
- */
+
 public class UserPrincipal implements Principal {
     
     private final Long userId;

@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
-/**
- * DTO pour la création/modification d'une annonce
- */
+
 public class AnnonceDTO {
     
     public Long id;
@@ -31,12 +29,12 @@ public class AnnonceDTO {
     
     public LocalDateTime dateModification;
 
-    // Constructeurs
+    public Long version;
     public AnnonceDTO() {}
 
-    public AnnonceDTO(Long id, String titre, String description, String categorie, 
-                     Double prix, String statut, Long auteurId, LocalDateTime dateCreation, 
-                     LocalDateTime dateModification) {
+    public AnnonceDTO(Long id, String titre, String description, String categorie,
+                     Double prix, String statut, Long auteurId, LocalDateTime dateCreation,
+                     LocalDateTime dateModification, Long version) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -46,9 +44,8 @@ public class AnnonceDTO {
         this.auteurId = auteurId;
         this.dateCreation = dateCreation;
         this.dateModification = dateModification;
+        this.version = version;
     }
-
-    // Builder Pattern pour faciliter le mapping DTO to Entity
     public static Builder builder() {
         return new Builder();
     }
@@ -63,6 +60,7 @@ public class AnnonceDTO {
         private Long auteurId;
         private LocalDateTime dateCreation;
         private LocalDateTime dateModification;
+        private Long version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -109,9 +107,14 @@ public class AnnonceDTO {
             return this;
         }
 
+        public Builder version(Long version) {
+            this.version = version;
+            return this;
+        }
+
         public AnnonceDTO build() {
-            return new AnnonceDTO(id, titre, description, categorie, prix, statut, 
-                                auteurId, dateCreation, dateModification);
+            return new AnnonceDTO(id, titre, description, categorie, prix, statut,
+                                auteurId, dateCreation, dateModification, version);
         }
     }
 }

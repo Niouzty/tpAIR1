@@ -9,11 +9,7 @@ import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Bonus Exercice 5 : JAAS TokenLoginModule
- * Authentifie les utilisateurs en validant un token pré-généré
- * Utilisé sur chaque requête REST pour reconstituer l'identité sans session
- */
+
 public class TokenLoginModule implements LoginModule {
 
     private Subject subject;
@@ -45,7 +41,6 @@ public class TokenLoginModule implements LoginModule {
 
     @Override
     public boolean login() throws LoginException {
-        // Récupérer le token via callback personnalisé
         Callback[] callbacks = new Callback[1];
         callbacks[0] = new NameCallback("Token: ");
         
@@ -61,8 +56,6 @@ public class TokenLoginModule implements LoginModule {
             System.out.println("[TokenLoginModule] Tentative validation token: " + 
                              (token != null ? token.substring(0, Math.min(8, token.length())) + "..." : "null"));
         }
-        
-        // Valider le token
         TokenManager.TokenInfo tokenInfo = TokenManager.getInstance().validateToken(token);
         
         if (tokenInfo == null) {
@@ -72,8 +65,6 @@ public class TokenLoginModule implements LoginModule {
         this.userId = tokenInfo.userId;
         this.username = tokenInfo.username;
         this.roles = new HashSet<>();
-        
-        // Assigner des rôles en fonction de l'utilisateur (pour la démo)
         if ("admin".equals(username)) {
             this.roles.add("ROLE_ADMIN");
             this.roles.add("ROLE_USER");
@@ -95,11 +86,7 @@ public class TokenLoginModule implements LoginModule {
         if (!success) {
             return false;
         }
-        
-        // Ajouter les Principals au Subject
         subject.getPrincipals().add(new JaasUserPrincipal(userId, username));
-        
-        // Ajouter les rôles
         for (String role : roles) {
             subject.getPrincipals().add(new JaasRolePrincipal(role));
         }

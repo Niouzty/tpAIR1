@@ -63,7 +63,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- AssertJ pour des assertions fluides -->
+        
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -71,7 +71,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JAX-RS (Jersey) pour l'API REST -->
+        
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
@@ -87,8 +87,13 @@
             <artifactId>jersey-media-json-binding</artifactId>
             <version>3.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>3.1.2</version>
+        </dependency>
 
-        <!-- Bean Validation pour la validation des DTOs -->
+        
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -100,7 +105,7 @@
             <version>8.0.1.Final</version>
         </dependency>
 
-        <!-- H2 pour les tests en mémoire -->
+        
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -108,7 +113,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SLF4J et Logback pour logging structuré -->
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -120,7 +125,7 @@
             <version>1.4.11</version>
         </dependency>
 
-        <!-- RestAssured pour tests d'intégration REST -->
+        
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -128,15 +133,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- OpenAPI/Swagger pour documentation API -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-
-        <!-- JMeter (optionnel pour tests de charge) -->
-        <!-- À installer séparément si nécessaire -->
+        
     </dependencies>
 
 
@@ -150,13 +147,13 @@
                 <version>3.4.0</version>
             </plugin>
 
-            <!-- Maven Surefire pour tests unitaires -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
-                    <!-- Exclure les tests d'intégration -->
+                    
                     <excludes>
                         <exclude>**/*IntegrationTest.java</exclude>
                         <exclude>**/*RestTest.java</exclude>
@@ -164,13 +161,13 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Failsafe pour tests d'intégration -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
-                    <!-- Inclure uniquement les tests d'intégration -->
+                    
                     <includes>
                         <include>**/*IntegrationTest.java</include>
                         <include>**/*RestTest.java</include>
@@ -188,9 +185,9 @@
         </plugins>
     </build>
 
-    <!-- Profils Maven pour tester séparément -->
+    
     <profiles>
-        <!-- Profil pour tests unitaires seuls -->
+        
         <profile>
             <id>unit-tests</id>
             <activation>
@@ -211,7 +208,7 @@
             </build>
         </profile>
 
-        <!-- Profil pour tests d'intégration seuls -->
+        
         <profile>
             <id>integration-tests</id>
             <activation>
@@ -232,7 +229,7 @@
             </build>
         </profile>
 
-        <!-- Profil pour tous les tests -->
+        
         <profile>
             <id>all-tests</id>
             <activation>

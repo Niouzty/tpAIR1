@@ -11,6 +11,9 @@ public class AuthService {
     public User authenticate(String username, String password) {
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         try {
+            if ("admin".equals(username)) {
+                ensureDefaultAdmin(em);
+            }
             User u = userRepo.findByUsername(em, username);
             if (u == null) return null;
 
@@ -19,6 +22,28 @@ public class AuthService {
             return u;
         } finally {
             em.close();
+        }
+    }
+
+    private void ensureDefaultAdmin(EntityManager em) {
+        User existing = userRepo.findByUsername(em, "admin");
+        if (existing != null) {
+            return;
+        }
+
+        em.getTransaction().begin();
+        try {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setEmail("admin@local.test");
+            admin.setPassword("admin");
+            userRepo.create(em, admin);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
         }
     }
 

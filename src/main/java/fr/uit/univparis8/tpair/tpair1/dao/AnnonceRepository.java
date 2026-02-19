@@ -63,16 +63,14 @@ public class AnnonceRepository {
             q.setParameter("status", status);
         }
 
-        int safePage = Math.max(1, page);
+        int safePage = Math.max(0, page);
         int safeSize = Math.max(1, size);
 
-        q.setFirstResult((safePage - 1) * safeSize);
+        q.setFirstResult(safePage * safeSize);
         q.setMaxResults(safeSize);
 
         return q.getResultList();
     }
-
-    // Recherche les annonces d'un utilisateur spécifique
     public List<Annonce> searchByAuthor(EntityManager em,
                                         Long authorId,
                                         String keyword,
@@ -110,12 +108,38 @@ public class AnnonceRepository {
             q.setParameter("status", status);
         }
 
-        int safePage = Math.max(1, page);
+        int safePage = Math.max(0, page);
         int safeSize = Math.max(1, size);
 
-        q.setFirstResult((safePage - 1) * safeSize);
+        q.setFirstResult(safePage * safeSize);
         q.setMaxResults(safeSize);
 
         return q.getResultList();
+    }
+
+    public long count(EntityManager em, String keyword, Long categoryId, AnnonceStatus status) {
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(a) FROM Annonce a WHERE 1=1 ");
+
+        if (keyword != null && !keyword.isBlank()) {
+            jpql.append("AND (LOWER(a.title) LIKE :kw OR LOWER(a.description) LIKE :kw) ");
+        }
+        if (categoryId != null) {
+            jpql.append("AND a.category.id = :catId ");
+        }
+        if (status != null) {
+            jpql.append("AND a.status = :status ");
+        }
+
+        var q = em.createQuery(jpql.toString(), Long.class);
+        if (keyword != null && !keyword.isBlank()) {
+            q.setParameter("kw", "%" + keyword.toLowerCase() + "%");
+        }
+        if (categoryId != null) {
+            q.setParameter("catId", categoryId);
+        }
+        if (status != null) {
+            q.setParameter("status", status);
+        }
+        return q.getSingleResult();
     }
 }

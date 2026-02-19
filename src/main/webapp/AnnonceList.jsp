@@ -14,6 +14,7 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Annonces</h2>
     <div>
+      <a href="AnnoncePublic" class="btn btn-outline-primary btn-sm">Toutes les publiées</a>
       <a href="Logout" class="btn btn-outline-dark btn-sm">Déconnexion</a>
       <a href="AnnonceAdd" class="btn btn-primary btn-sm">Ajouter</a>
     </div>

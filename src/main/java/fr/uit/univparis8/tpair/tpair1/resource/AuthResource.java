@@ -4,28 +4,28 @@ import fr.uit.univparis8.tpair.tpair1.dto.LoginRequest;
 import fr.uit.univparis8.tpair.tpair1.dto.LoginResponse;
 import fr.uit.univparis8.tpair.tpair1.dto.ErrorResponse;
 import fr.uit.univparis8.tpair.tpair1.security.TokenManager;
+import fr.uit.univparis8.tpair.tpair1.security.jaas.JaasConfigSupport;
+import fr.uit.univparis8.tpair.tpair1.security.jaas.JaasUserPrincipal;
+import fr.uit.univparis8.tpair.tpair1.security.jaas.UsernamePasswordCallbackHandler;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-/**
- * Partie III - Exercice 5 : Authentification stateless
- * Endpoint pour le login et la génération de tokens
- */
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+
+
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
-    /**
-     * POST /api/auth/login
-     * Authentifie un utilisateur et retourne un token
-     */
+    
     @POST
     @Path("/login")
     public Response login(LoginRequest request) {
         try {
-            // Validation des paramètres
             if (request == null || request.username == null || request.password == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity(new ErrorResponse(400, "Username et password sont obligatoires"))
@@ -38,18 +38,35 @@ public class AuthResource {
                         .build();
             }
 
-            // TODO: Vérifier les credentials en base de données
-            // Pour l'instant, accepter tous les logins (à remplacer par une vraie authentification)
-            Long userId = generateUserId(request.username);
-            
-            // Générer le token
-            String token = TokenManager.getInstance().generateToken(userId, request.username);
+            JaasConfigSupport.ensureConfigured();
+            LoginContext loginContext = new LoginContext(
+                    "MasterAnnonceLogin",
+                    new UsernamePasswordCallbackHandler(request.username, request.password)
+            );
+            try {
+                loginContext.login();
+            } catch (LoginException e) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(new ErrorResponse(401, "Identifiants invalides"))
+                        .build();
+            }
 
-            // Retourner la réponse
+            Subject subject = loginContext.getSubject();
+            JaasUserPrincipal principal = subject.getPrincipals(JaasUserPrincipal.class)
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+            if (principal == null) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(new ErrorResponse(401, "Authentification JAAS invalide"))
+                        .build();
+            }
+
+            String token = TokenManager.getInstance().generateToken(principal.getUserId(), principal.getName());
             LoginResponse response = new LoginResponse(
                     token,
-                    userId,
-                    request.username,
+                    principal.getUserId(),
+                    principal.getName(),
                     "Authentification réussie"
             );
 
@@ -61,10 +78,7 @@ public class AuthResource {
         }
     }
 
-    /**
-     * POST /api/auth/logout
-     * Révoque le token de l'utilisateur courant
-     */
+    
     @POST
     @Path("/logout")
     public Response logout(@HeaderParam("Authorization") String authHeader) {
@@ -95,17 +109,7 @@ public class AuthResource {
         return authHeader.substring("Bearer ".length()).trim();
     }
 
-    /**
-     * Génère un ID utilisateur basé sur le username (pour la démo)
-     * En production, cet ID viendrait de la base de données
-     */
-    private Long generateUserId(String username) {
-        return (long) username.hashCode();
-    }
-
-    /**
-     * DTO pour la réponse de logout
-     */
+    
     public static class LogoutResponse {
         public String message;
 

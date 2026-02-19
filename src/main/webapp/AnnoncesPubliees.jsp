@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="fr.uit.univparis8.tpair.tpair1.model.Annonce" %>
-<%@ page import="fr.uit.univparis8.tpair.tpair1.service.AnnonceService" %>
-<%@ page import="fr.uit.univparis8.tpair.tpair1.model.AnnonceStatus" %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,7 +32,6 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
         <a class="navbar-brand" href="index.jsp">📰 MasterAnnonce</a>
@@ -42,7 +39,6 @@
     </div>
 </nav>
 
-<!-- Header -->
 <div class="bg-light border-bottom py-4">
     <div class="container">
         <h1>📋 Toutes les Annonces Publiées</h1>
@@ -50,24 +46,10 @@
     </div>
 </div>
 
-<!-- Contenu -->
 <div class="container py-5">
     <%
-        try {
-            AnnonceService service = new AnnonceService();
-            List<Annonce> allAnnonces = service.listAll();
-
-            // Filtrer les annonces PUBLISHED
-            List<Annonce> annonces = new java.util.ArrayList<>();
-            if (allAnnonces != null) {
-                for (Annonce a : allAnnonces) {
-                    if (a != null && a.getStatus() == AnnonceStatus.PUBLISHED) {
-                        annonces.add(a);
-                    }
-                }
-            }
-
-            if (annonces == null || annonces.isEmpty()) {
+        List<Annonce> annonces = (List<Annonce>) request.getAttribute("annonces");
+        if (annonces == null || annonces.isEmpty()) {
     %>
         <div class="alert alert-info text-center py-5">
             <h3>📭 Aucune annonce publiée pour le moment</h3>
@@ -75,7 +57,7 @@
             <a href="index.jsp" class="btn btn-primary">← Retour à l'accueil</a>
         </div>
     <%
-            } else {
+        } else {
     %>
         <div class="row">
             <%
@@ -125,14 +107,6 @@
             <p class="text-muted">Total : <%= annonces.size() %> annonce(s)</p>
             <a href="index.jsp" class="btn btn-primary">← Retour à l'accueil</a>
         </div>
-    <%
-            }
-        } catch (Exception e) {
-    %>
-        <div class="alert alert-danger">
-            <strong>❌ Erreur :</strong> <%= e.getMessage() %>
-        </div>
-        <a href="index.jsp" class="btn btn-primary">← Retour à l'accueil</a>
     <%
         }
     %>

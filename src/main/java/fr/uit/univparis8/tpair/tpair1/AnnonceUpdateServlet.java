@@ -4,13 +4,9 @@ import fr.uit.univparis8.tpair.tpair1.model.Annonce;
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
 import fr.uit.univparis8.tpair.tpair1.service.ValidationException;
 import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
-
-// DÉSACTIVÉ : TP3 utilise une API REST pure
-// @WebServlet("/AnnonceUpdate")
 public class AnnonceUpdateServlet extends HttpServlet {
 
     private final AnnonceService service = new AnnonceService();
@@ -55,11 +51,8 @@ public class AnnonceUpdateServlet extends HttpServlet {
         a.setMail(req.getParameter("mail"));
 
         try {
-            // Récupérer l'ID de l'utilisateur connecté
             HttpSession session = req.getSession();
             Long userId = (Long) session.getAttribute("userId");
-
-            // Passer userId au service pour vérifier l'ownership
             boolean ok = service.update(a, userId);
             if (!ok) {
                 req.setAttribute("error", "Annonce non trouvée ou accès refusé");

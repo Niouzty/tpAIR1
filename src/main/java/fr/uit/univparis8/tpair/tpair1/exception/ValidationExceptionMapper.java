@@ -10,10 +10,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Partie II - Exercice 3 : Validation API et gestion centralisée des erreurs
- * Mapper pour les exceptions de validation Bean Validation
- */
+
 @Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 

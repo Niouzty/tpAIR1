@@ -4,13 +4,9 @@ package fr.uit.univparis8.tpair.tpair1;
 import fr.uit.univparis8.tpair.tpair1.model.User;
 import fr.uit.univparis8.tpair.tpair1.service.AuthService;
 import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
-
-// DÉSACTIVÉ : TP3 utilise une API REST pure, pas de servlets
-// @WebServlet("/Login")
 public class LoginServlet extends HttpServlet{
     private final AuthService authService = new AuthService();
 
@@ -18,6 +14,11 @@ public class LoginServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=UTF-8");
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("userId") != null) {
+            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            return;
+        }
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
@@ -38,12 +39,10 @@ public class LoginServlet extends HttpServlet{
         }
 
         HttpSession session = req.getSession(true);
-        session.setMaxInactiveInterval(30 * 60); // 30 minutes
+        session.setMaxInactiveInterval(30 * 60);
         session.setAttribute("user", u.getUsername());
         session.setAttribute("userId", u.getId());
 
-        resp.sendRedirect(req.getContextPath() + "/AnnonceList");
+        resp.sendRedirect(req.getContextPath() + "/index.jsp");
     }
 }
-
-

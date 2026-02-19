@@ -19,12 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests d'intégration du Repository Annonce
- * Utilise une base de données H2 in-memory pour l'isolation des tests
- * 
- * À exécuter avec : mvn test ou mvn verify
- */
+
 public class AnnonceRepositoryIntegrationTest {
 
     private EntityManagerFactory emf;
@@ -35,15 +30,12 @@ public class AnnonceRepositoryIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialiser la base H2 en mémoire
         emf = Persistence.createEntityManagerFactory("h2-test");
         em = emf.createEntityManager();
         
         annonceRepository = new AnnonceRepository();
         userRepository = new UserRepository();
         categoryRepository = new CategoryRepository();
-        
-        // Créer les tables
         createTestData();
     }
 
@@ -57,21 +49,15 @@ public class AnnonceRepositoryIntegrationTest {
         }
     }
 
-    /**
-     * Crée les données de test : User + Category + Annonces
-     */
+    
     private void createTestData() {
         try {
             em.getTransaction().begin();
-
-            // Créer un utilisateur
             User user = new User();
             user.setUsername("testuser");
             user.setEmail("test@mail.com");
             user.setPassword("password123");
             userRepository.create(em, user);
-
-            // Créer une catégorie
             Category category = new Category();
             category.setLabel("Immobilier");
             categoryRepository.create(em, category);
@@ -85,9 +71,7 @@ public class AnnonceRepositoryIntegrationTest {
         }
     }
 
-    /**
-     * Test 1 : Créer une annonce avec statut DRAFT
-     */
+    
     @Test
     public void testCreateAnnonce() {
         em.getTransaction().begin();
@@ -113,12 +97,9 @@ public class AnnonceRepositoryIntegrationTest {
         assertEquals(AnnonceStatus.DRAFT, annonce.getStatus());
     }
 
-    /**
-     * Test 2 : Lire une annonce par ID
-     */
+    
     @Test
     public void testFindById() {
-        // Créer une annonce
         em.getTransaction().begin();
         User user = userRepository.findByUsername(em, "testuser");
         Category category = categoryRepository.findByLabel(em, "Immobilier");
@@ -136,8 +117,6 @@ public class AnnonceRepositoryIntegrationTest {
         annonceRepository.create(em, annonce);
         Long id = annonce.getId();
         em.getTransaction().commit();
-
-        // Lire l'annonce
         Annonce found = annonceRepository.findById(em, id);
 
         assertNotNull(found);
@@ -145,12 +124,9 @@ public class AnnonceRepositoryIntegrationTest {
         assertEquals("Maison avec jardin", found.getTitle());
     }
 
-    /**
-     * Test 3 : Mettre à jour une annonce
-     */
+    
     @Test
     public void testUpdateAnnonce() {
-        // Créer et mettre à jour une annonce
         em.getTransaction().begin();
         User user = userRepository.findByUsername(em, "testuser");
         Category category = categoryRepository.findByLabel(em, "Immobilier");
@@ -168,27 +144,20 @@ public class AnnonceRepositoryIntegrationTest {
         annonceRepository.create(em, annonce);
         Long id = annonce.getId();
         em.getTransaction().commit();
-
-        // Mettre à jour
         em.getTransaction().begin();
         Annonce toUpdate = annonceRepository.findById(em, id);
         toUpdate.setTitle("Studio nouveau prix");
         toUpdate.setDescription("Description mise à jour");
         annonceRepository.update(em, toUpdate);
         em.getTransaction().commit();
-
-        // Vérifier
         Annonce updated = annonceRepository.findById(em, id);
         assertEquals("Studio nouveau prix", updated.getTitle());
         assertEquals("Description mise à jour", updated.getDescription());
     }
 
-    /**
-     * Test 4 : Supprimer une annonce
-     */
+    
     @Test
     public void testDeleteAnnonce() {
-        // Créer une annonce
         em.getTransaction().begin();
         User user = userRepository.findByUsername(em, "testuser");
         Category category = categoryRepository.findByLabel(em, "Immobilier");
@@ -200,31 +169,24 @@ public class AnnonceRepositoryIntegrationTest {
         annonce.setMail("test@mail.com");
         annonce.setAuthor(user);
         annonce.setCategory(category);
-        annonce.setStatus(AnnonceStatus.ARCHIVED);  // Doit être ARCHIVED pour pouvoir supprimer
+        annonce.setStatus(AnnonceStatus.ARCHIVED);
         annonce.setDate(LocalDateTime.now());
 
         annonceRepository.create(em, annonce);
         Long id = annonce.getId();
         em.getTransaction().commit();
-
-        // Supprimer
         em.getTransaction().begin();
         boolean deleted = annonceRepository.delete(em, id);
         em.getTransaction().commit();
 
         assertTrue(deleted);
-
-        // Vérifier que l'annonce n'existe plus
         Annonce notFound = annonceRepository.findById(em, id);
         assertNull(notFound);
     }
 
-    /**
-     * Test 5 : Rechercher des annonces avec pagination
-     */
+    
     @Test
     public void testSearchWithPagination() {
-        // Créer plusieurs annonces
         em.getTransaction().begin();
         User user = userRepository.findByUsername(em, "testuser");
         Category category = categoryRepository.findByLabel(em, "Immobilier");
@@ -242,26 +204,18 @@ public class AnnonceRepositoryIntegrationTest {
             annonceRepository.create(em, annonce);
         }
         em.getTransaction().commit();
-
-        // Rechercher page 0, size 10
         List<Annonce> page1 = annonceRepository.search(em, null, null, null, 0, 10);
         assertEquals(10, page1.size());
-
-        // Rechercher page 1, size 10
         List<Annonce> page2 = annonceRepository.search(em, null, null, null, 1, 10);
         assertEquals(5, page2.size());
     }
 
-    /**
-     * Test 6 : Rechercher par statut
-     */
+    
     @Test
     public void testSearchByStatus() {
         em.getTransaction().begin();
         User user = userRepository.findByUsername(em, "testuser");
         Category category = categoryRepository.findByLabel(em, "Immobilier");
-
-        // Créer 3 annonces DRAFT et 2 PUBLISHED
         for (int i = 0; i < 3; i++) {
             Annonce annonce = new Annonce();
             annonce.setTitle("Draft " + i);
@@ -288,19 +242,13 @@ public class AnnonceRepositoryIntegrationTest {
             annonceRepository.create(em, annonce);
         }
         em.getTransaction().commit();
-
-        // Rechercher par statut PUBLISHED
         List<Annonce> published = annonceRepository.search(em, null, null, AnnonceStatus.PUBLISHED, 0, 100);
         assertEquals(2, published.size());
-
-        // Rechercher par statut DRAFT
         List<Annonce> draft = annonceRepository.search(em, null, null, AnnonceStatus.DRAFT, 0, 100);
         assertEquals(3, draft.size());
     }
 
-    /**
-     * Test 7 : Vérifier la concurrence optimiste avec @Version
-     */
+    
     @Test
     public void testOptimisticLocking() {
         em.getTransaction().begin();
@@ -321,15 +269,11 @@ public class AnnonceRepositoryIntegrationTest {
         Long version1 = annonce.getVersion();
         Long id = annonce.getId();
         em.getTransaction().commit();
-
-        // Mettre à jour
         em.getTransaction().begin();
         Annonce toUpdate = annonceRepository.findById(em, id);
         toUpdate.setTitle("Titre modifié");
         annonceRepository.update(em, toUpdate);
         em.getTransaction().commit();
-
-        // Vérifier que la version a changé
         Annonce updated = annonceRepository.findById(em, id);
         Long version2 = updated.getVersion();
 

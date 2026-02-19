@@ -45,8 +45,6 @@ public class AnnonceService {
         try {
             validateAnnonce(a);
             em.getTransaction().begin();
-
-            // Charger l'utilisateur connecté comme auteur
             User author = userRepo.findById(em, userId);
             if (author == null) {
                 em.getTransaction().rollback();
@@ -84,7 +82,25 @@ public class AnnonceService {
     public List<Annonce> listAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            return annonceRepo.search(em, null, null, null, 0, 100);
+            return annonceRepo.search(em, null, null, null, 0, Integer.MAX_VALUE);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Annonce> listPaged(int page, int size) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return annonceRepo.search(em, null, null, null, page, size);
+        } finally {
+            em.close();
+        }
+    }
+
+    public long countAll() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return annonceRepo.count(em, null, null, null);
         } finally {
             em.close();
         }
@@ -100,14 +116,10 @@ public class AnnonceService {
                 em.getTransaction().rollback();
                 return false;
             }
-
-            // Vérifier que l'utilisateur est le propriétaire
             if (!a.getAuthor().getId().equals(userId)) {
                 em.getTransaction().rollback();
                 return false;
             }
-
-            // Règle métier : archivage obligatoire avant suppression
             if (!AnnonceStatus.ARCHIVED.equals(a.getStatus())) {
                 em.getTransaction().rollback();
                 throw new ValidationException("Une annonce doit être archivée avant suppression");
@@ -134,14 +146,10 @@ public class AnnonceService {
                 em.getTransaction().rollback();
                 return false;
             }
-
-            // Vérifier que l'utilisateur est le propriétaire
             if (!existing.getAuthor().getId().equals(userId)) {
                 em.getTransaction().rollback();
                 return false;
             }
-
-            // Règle métier : une annonce PUBLISHED ne peut pas être modifiée
             if (AnnonceStatus.PUBLISHED.equals(existing.getStatus())) {
                 em.getTransaction().rollback();
                 throw new ValidationException("Une annonce PUBLISHED ne peut pas être modifiée");
@@ -163,8 +171,6 @@ public class AnnonceService {
             em.close();
         }
     }
-
-    // Recherche les annonces de l'utilisateur connecté
     public List<Annonce> searchMyAnnonces(Long userId, String keyword, Long categoryId, AnnonceStatus status, int page, int size) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -200,8 +206,6 @@ public class AnnonceService {
                 em.getTransaction().rollback();
                 return false;
             }
-
-            // Vérifier que l'utilisateur est le propriétaire
             if (!a.getAuthor().getId().equals(userId)) {
                 em.getTransaction().rollback();
                 return false;

@@ -3,10 +3,6 @@ package fr.uit.univparis8.tpair.tpair1;
 import java.io.*;
 
 import jakarta.servlet.http.*;
-//import jakarta.servlet.annotation.*;
-
-// DÉSACTIVÉ : TP3 utilise une API REST pure
-// @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

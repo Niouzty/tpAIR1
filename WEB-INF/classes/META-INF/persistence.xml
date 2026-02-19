@@ -10,12 +10,13 @@
 
         <properties>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:postgresql://database-etudiants:5432/epembelefuala"/>
-            <property name="jakarta.persistence.jdbc.user" value="epembelefuala"/>
-            <property name="jakarta.persistence.jdbc.password" value="9q9g6Gvv"/>
+                      value="jdbc:postgresql://127.0.0.1:5432/postgres"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="Exauce1964"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
-            <property name="hibernate.default_schema" value="MasterAnnonce"/>
+            <property name="hibernate.default_schema" value="&quot;MasterAnnonce&quot;"/>
+            <property name="hibernate.globally_quoted_identifiers" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>

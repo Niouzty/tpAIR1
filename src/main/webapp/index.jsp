@@ -54,7 +54,7 @@
     <p>La plateforme pour publier et découvrir les meilleures annonces</p>
 
     <div class="mb-4">
-        <a href="AnnoncesPubliees.jsp" class="btn btn-light btn-large" style="font-weight: bold; padding: 15px 50px; font-size: 20px;">
+        <a href="AnnoncePublic" class="btn btn-light btn-large" style="font-weight: bold; padding: 15px 50px; font-size: 20px;">
             🔍 PARCOURIR LES ANNONCES
         </a>
 

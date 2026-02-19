@@ -1,5 +1,8 @@
 package fr.uit.univparis8.tpair.tpair1.security.jaas;
 
+import fr.uit.univparis8.tpair.tpair1.model.User;
+import fr.uit.univparis8.tpair.tpair1.service.AuthService;
+
 import javax.security.auth.Subject;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.LoginException;
@@ -7,10 +10,7 @@ import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Bonus Exercice 5 : JAAS DbLoginModule
- * Authentifie les utilisateurs en vérifiant username/password en base de données
- */
+
 public class DbLoginModule implements LoginModule {
 
     private Subject subject;
@@ -31,8 +31,6 @@ public class DbLoginModule implements LoginModule {
         this.callbackHandler = callbackHandler;
         this.sharedState = sharedState;
         this.options = options;
-        
-        // Récupérer l'option debug si présente
         String debugOption = (String) options.get("debug");
         this.debug = "true".equalsIgnoreCase(debugOption);
         
@@ -43,7 +41,6 @@ public class DbLoginModule implements LoginModule {
 
     @Override
     public boolean login() throws LoginException {
-        // Récupérer les callbacks (username et password)
         Callback[] callbacks = new Callback[2];
         callbacks[0] = new NameCallback("Username: ");
         callbacks[1] = new PasswordCallback("Password: ", false);
@@ -62,32 +59,24 @@ public class DbLoginModule implements LoginModule {
             System.out.println("[DbLoginModule] Tentative login pour user: " + username);
         }
         
-        // TODO: Vérifier en base de données
-        // Pour la démo, accepter admin/admin123
-        if ("admin".equals(username) && "admin123".equals(password)) {
-            this.userId = 1L;
-            this.roles = new HashSet<>();
-            this.roles.add("ROLE_ADMIN");
-            this.roles.add("ROLE_USER");
-            this.success = true;
-            
-            if (debug) {
-                System.out.println("[DbLoginModule] Authentication réussie pour: " + username);
-            }
-            return true;
-        } else if ("user".equals(username) && "user123".equals(password)) {
-            this.userId = 2L;
-            this.roles = new HashSet<>();
-            this.roles.add("ROLE_USER");
-            this.success = true;
-            
-            if (debug) {
-                System.out.println("[DbLoginModule] Authentication réussie pour: " + username);
-            }
-            return true;
+        AuthService authService = new AuthService();
+        User user = authService.authenticate(username, password);
+        if (user == null) {
+            throw new LoginException("Authentication échouée pour: " + username);
         }
-        
-        throw new LoginException("Authentication échouée pour: " + username);
+
+        this.userId = user.getId();
+        this.roles = new HashSet<>();
+        this.roles.add("ROLE_USER");
+        if ("admin".equalsIgnoreCase(user.getUsername())) {
+            this.roles.add("ROLE_ADMIN");
+        }
+        this.success = true;
+
+        if (debug) {
+            System.out.println("[DbLoginModule] Authentication réussie pour: " + username);
+        }
+        return true;
     }
 
     @Override
@@ -95,11 +84,7 @@ public class DbLoginModule implements LoginModule {
         if (!success) {
             return false;
         }
-        
-        // Ajouter les Principals au Subject
         subject.getPrincipals().add(new JaasUserPrincipal(userId, username));
-        
-        // Ajouter les rôles
         for (String role : roles) {
             subject.getPrincipals().add(new JaasRolePrincipal(role));
         }

@@ -1,164 +1,96 @@
-# MasterAnnonce - Application J2EE de Gestion d'Annonces
+# MasterAnnonce - TP3
 
-## Vue d'ensemble
+Backend/API Jakarta EE + interface JSP pour la gestion d'annonces.
 
-MasterAnnonce est une application web Jakarta EE permettant aux utilisateurs de creer, publier et gerer leurs annonces de maniere securisee.
+## 1) Prérequis
+- Java 21 (ou 17+)
+- Maven 3.9+
+- PostgreSQL 14+
+- Tomcat `10.1.52`
 
-## Architecture
+## 2) Base de donnees
+Le projet utilise le schema PostgreSQL `MasterAnnonce`.
 
-### Modele des donnees
+### Script SQL
+Le script a lancer est a la racine du projet:
+- `scripts.sql`
 
-- User : id, username (unique), email (unique), password, createdAt
-- Category : id, label (unique)
-- Annonce : id, title, description, adress, mail, date, status (DRAFT/PUBLISHED/ARCHIVED), author_id (FK User), category_id (FK Category)
+Execution:
+```bash
+psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -f scripts.sql
+```
 
-### Couches
+Ce script cree:
+- schema `MasterAnnonce`
+- tables `users`, `category`, `annonce`
+- contraintes/index
+- donnees minimales (`General`, utilisateur `admin`)
 
-- Web Layer : Servlets (controleurs)
-- Service Layer : AnnonceService, AuthService (logique metier)
-- DAO Layer : AnnonceRepository, UserRepository, CategoryRepository
-- JPA Entities : Annonce, User, Category
-- Database : PostgreSQL
+## 3) Configuration JPA actuelle
+Fichier:
+- `src/main/resources/META-INF/persistence.xml`
 
-### Packages
+Configuration attendue (locale):
+- URL: `jdbc:postgresql://127.0.0.1:5432/postgres`
+- User: `postgres`
+- Password: `Exauce1964`
+- Schema: `MasterAnnonce`
 
-- fr.uit.univparis8.tpair.tpair1 : Servlets
-- fr.uit.univparis8.tpair.tpair1.service : Services
-- fr.uit.univparis8.tpair.tpair1.dao : Repositories
-- fr.uit.univparis8.tpair.tpair1.model : Entites JPA
-- fr.uit.univparis8.tpair.tpair1.filter : Filtres de securite
-- fr.uit.univparis8.tpair.tpair1.jpa : Utilitaires JPA
+## 4) Modifications faites par rapport au TP3
+### REST (JAX-RS)
+- Point d'entree API `/api`
+- Ressource annonces avec CRUD
+- DTO + validation + mapping service
+- Gestion d'erreurs JSON centralisee (400/401/404/409/500)
 
-## Fonctionnalites
+### Securite
+- Authentification token (login REST)
+- Filtre de securite sur endpoints proteges
+- Regles metier: auteur uniquement, transitions de statut
+- Integration JAAS (login/token)
 
-### Authentification
-- Systeme de login/logout
-- Sessions utilisateur
-- Filtre de securite (AuthFilter)
+### Robustesse/qualite
+- Logging structure
+- Tests unitaires + integration
+- OpenAPI: `openapi/openapi.yaml`
+- Script charge simple: `load-tests/k6-smoke.js`
 
-### Gestion des Annonces
-- Liste paginee des annonces de l'utilisateur
-- Creation d'annonce
-- Modification (proprietaire uniquement)
-- Suppression (proprietaire uniquement)
-- Publication DRAFT -> PUBLISHED
-- Archivage -> ARCHIVED
-- Recherche par mot-cle
-- Filtrage par categorie et statut
-- Validation des donnees
+### Ajustements web (interface JSP)
+- Redirection apres login/inscription vers la page d'accueil
+- Page publique des annonces publiees (`/AnnoncePublic`)
+- Liste personnelle (`/AnnonceList`) reservee a l'utilisateur connecte
 
-## Configuration technique
+## 5) Page d'accueil (`index.jsp`)
+Fichier:
+- `src/main/webapp/index.jsp`
 
-Stack
-- JDK : Java 11+
-- Application Server : Tomcat 10+ (Jakarta EE)
-- ORM : Hibernate 6.2.7
-- Database : PostgreSQL
-- Build : Maven
-- Frontend : JSP + Bootstrap 5
+Comportement:
+- Toujours accessible via: `http://localhost:8080/tpAIR1/index.jsp`
+- Bouton public: consultation des annonces publiees (`/AnnoncePublic`)
+- Si utilisateur connecte:
+  - `Ajouter une annonce`
+  - `Mes annonces`
+  - `Deconnexion`
+- Si utilisateur non connecte:
+  - `Connexion`
+  - `Inscription`
 
-Dependances principales
-- jakarta.jakartaee-web-api 10.0.0
-- hibernate-core 6.2.7.Final
-- postgresql 42.6.0
-- junit-jupiter 5.10.0
+Objectif de cette page:
+- Servir de point d'entree unique
+- Separer clairement navigation publique et navigation authentifiee
 
-Configuration JPA (persistence.xml)
-- URL : jdbc:postgresql://database-etudiants:5432/epembelefuala
-- Driver : org.postgresql.Driver
-- hibernate.hbm2ddl.auto : update
+## 6) Lancement
+```bash
+./mvnw clean package
+```
 
-## Exercices TP2 realises
+Deployer `target/tpAIR1-1.0-SNAPSHOT.war` sur Tomcat 10.1.52 puis ouvrir:
+- `http://localhost:8080/tpAIR1/index.jsp`
 
-### Exercice 1 : Setup JPA/Hibernate
-- Dependances Maven
-- persistence.xml
-- JPAUtil
-
-### Exercice 2 : Mapping JPA
-- Entites User, Category, Annonce
-- Annotations JPA
-- Bean Validation
-- Relations mappees
-
-### Exercice 3 : Repositories
-- AnnonceRepository avec CRUD et search
-- searchByAuthor() pour filtrer par utilisateur
-- UserRepository et CategoryRepository
-- JPQL uniquement
-
-### Exercice 4 : Service et Transactions
-- AnnonceService avec logique metier
-- Transactions dans le service
-- Validation des annonces
-- Controle d'acces par utilisateur (ownership)
-
-### Exercice 5 : Web (Servlets et JSP)
-- Authentification (LoginServlet, LogoutServlet)
-- AuthFilter pour la securite
-- CRUD annonces
-- Formulaires avec validation
-- Gestion des erreurs
-
-### Exercice 6 : Validation et gestion des erreurs
-- Validation serveur des formulaires
-- Messages d'erreur dans les JSP
-- Conservation des valeurs saisies
-
-### Bonus : Tests
-- 4 tests unitaires dans AnnonceServiceTest
-- Tests de propriete, transition de statut, controle d'acces, validation
-
-## Problemes rencontres et solutions
-
-### Probleme 1 : Isolation des donnees par utilisateur
-
-Probleme : Les utilisateurs voyaient TOUTES les annonces et pouvaient modifier celles des autres.
-
-Solution :
-1. Ajouter searchByAuthor() dans AnnonceRepository pour filtrer par author_id
-2. Ajouter userId en parametre dans create(), update(), delete(), publish(), archive()
-3. Verifier l'ownership avant toute modification
-4. Recuperer userId de la session dans les Servlets
-5. Passer userId aux appels service
-
-Resultat : Chaque utilisateur ne voit et ne modifie que SES annonces.
-
-### Probleme 2 : Validation avec messages simples
-
-Solution : Ajouter constructeur ValidationException(String message)
-
-### Probleme 3 : Encodage et redirection
-
-Solution :
-- Ajouter req.setCharacterEncoding("UTF-8")
-- Ajouter resp.setContentType("text/html;charset=UTF-8")
-- Utiliser req.getContextPath() dans les redirections
-- Ajouter session.setMaxInactiveInterval(30 * 60)
-
-## Deploiement
-
-Prerequisites
-- PostgreSQL operationnel
-- Tomcat 10+
-- Maven
-
-Etapes
-1. mvn clean package
-2. cp target/tpAIR1-1.0-SNAPSHOT.war $CATALINA_HOME/webapps/
-3. Redemarrer Tomcat
-
-Acces
-http://localhost:8080/tpAIR1-1.0-SNAPSHOT/
-
-## Statut
-
-BUILD SUCCESS
-- 24 fichiers Java compiles
-- 4 tests unitaires passants
-- WAR genere
-
-Application prete au deploiement.
-
-Version : 2.0 (avec corrections de securite)
-Date : 2026-02-23
+## 7) URLs principales
+- Accueil: `/tpAIR1/index.jsp`
+- Login: `/tpAIR1/Login`
+- Register: `/tpAIR1/Register`
+- Mes annonces: `/tpAIR1/AnnonceList`
+- Annonces publiees (public): `/tpAIR1/AnnoncePublic`
+- API base: `/tpAIR1/api`
