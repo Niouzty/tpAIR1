@@ -1,11 +1,12 @@
 package fr.uit.univparis8.tpair.tpair1;
 
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
-import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/AnnoncePublish")
+// DÉSACTIVÉ : TP3 utilise une API REST pure
+// @WebServlet("/AnnoncePublish")
 public class AnnoncePublishServlet extends HttpServlet {
 
     private final AnnonceService service = new AnnonceService();

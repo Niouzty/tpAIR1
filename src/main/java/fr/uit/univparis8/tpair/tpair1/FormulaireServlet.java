@@ -1,6 +1,6 @@
 package fr.uit.univparis8.tpair.tpair1;
 
-import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,7 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "formulaireServlet", value = "/formulaire-servlet")
+// DÉSACTIVÉ : TP3 utilise une API REST pure
+// @WebServlet(name = "formulaireServlet", value = "/formulaire-servlet")
 public class FormulaireServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

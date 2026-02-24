@@ -4,12 +4,13 @@ import fr.uit.univparis8.tpair.tpair1.model.Annonce;
 import fr.uit.univparis8.tpair.tpair1.service.AnnonceService;
 import fr.uit.univparis8.tpair.tpair1.service.ValidationException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("/AnnonceUpdate")
+// DÉSACTIVÉ : TP3 utilise une API REST pure
+// @WebServlet("/AnnonceUpdate")
 public class AnnonceUpdateServlet extends HttpServlet {
 
     private final AnnonceService service = new AnnonceService();

@@ -107,6 +107,12 @@ public class AnnonceService {
                 return false;
             }
 
+            // Règle métier : archivage obligatoire avant suppression
+            if (!AnnonceStatus.ARCHIVED.equals(a.getStatus())) {
+                em.getTransaction().rollback();
+                throw new ValidationException("Une annonce doit être archivée avant suppression");
+            }
+
             boolean ok = annonceRepo.delete(em, id);
             em.getTransaction().commit();
             return ok;
@@ -133,6 +139,12 @@ public class AnnonceService {
             if (!existing.getAuthor().getId().equals(userId)) {
                 em.getTransaction().rollback();
                 return false;
+            }
+
+            // Règle métier : une annonce PUBLISHED ne peut pas être modifiée
+            if (AnnonceStatus.PUBLISHED.equals(existing.getStatus())) {
+                em.getTransaction().rollback();
+                throw new ValidationException("Une annonce PUBLISHED ne peut pas être modifiée");
             }
 
             existing.setTitle(a.getTitle());

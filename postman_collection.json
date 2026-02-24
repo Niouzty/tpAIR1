@@ -1,0 +1,322 @@
+{
+  "info": {
+    "_postman_id": "tp3-rest-api",
+    "name": "TP3 - MasterAnnonce REST API",
+    "description": "Collection de tests pour l'API REST du TP3",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Hello World - Test simple",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/helloWorld",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "helloWorld"]
+        }
+      }
+    },
+    {
+      "name": "2. Hello World - Avec QueryParams",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/helloWorld/with-query?nom=Dupont&prenom=Jean",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "helloWorld", "with-query"],
+          "query": [
+            {
+              "key": "nom",
+              "value": "Dupont"
+            },
+            {
+              "key": "prenom",
+              "value": "Jean"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Hello World - Avec PathParams",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/helloWorld/with-path/Martin/Pierre",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "helloWorld", "with-path", "Martin", "Pierre"]
+        }
+      }
+    },
+    {
+      "name": "4. LOGIN - Obtenir un token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  var jsonData = pm.response.json();",
+              "  pm.environment.set('token', jsonData.token);",
+              "  console.log('Token sauvegardé:', jsonData.token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "5. LISTER - Toutes les annonces (paginé)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces?page=0&size=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces"],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. CRÉER - Nouvelle annonce",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titre\": \"Appartement 3 pièces à Paris\",\n  \"description\": \"Bel appartement rénové en plein cœur de Paris, 2ème étage, lumineux\",\n  \"categorie\": \"Immobilier\",\n  \"prix\": 1200.50\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces"]
+        }
+      }
+    },
+    {
+      "name": "7. DÉTAIL - Récupérer une annonce par ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces", "1"]
+        }
+      }
+    },
+    {
+      "name": "8. METTRE À JOUR - Modifier une annonce",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titre\": \"Appartement 3 pièces à Paris - RÉDUIT\",\n  \"description\": \"Bel appartement rénové, prix négociable\",\n  \"categorie\": \"Immobilier\",\n  \"prix\": 1100.00\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces", "1"]
+        }
+      }
+    },
+    {
+      "name": "9. SUPPRIMER - Supprimer une annonce",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces", "1"]
+        }
+      }
+    },
+    {
+      "name": "10. LOGOUT - Révoquer le token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/auth/logout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "auth", "logout"]
+        }
+      }
+    },
+    {
+      "name": "11. ERREUR - Accès sans token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces"]
+        }
+      },
+      "description": "Devrait retourner HTTP 401 (Unauthorized)"
+    },
+    {
+      "name": "12. ERREUR - Token invalide",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer token_invalide_12345"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces"]
+        }
+      },
+      "description": "Devrait retourner HTTP 401 (Invalid token)"
+    },
+    {
+      "name": "13. ERREUR - Annonce inexistante",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces/999999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces", "999999"]
+        }
+      },
+      "description": "Devrait retourner HTTP 404 (Not Found)"
+    },
+    {
+      "name": "14. ERREUR - Données invalides (titre manquant)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"Pas de titre fourni\",\n  \"categorie\": \"Test\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/tpAIR1/api/annonces",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["tpAIR1", "api", "annonces"]
+        }
+      },
+      "description": "Devrait retourner HTTP 400 (Bad Request) avec erreurs de validation"
+    }
+  ]
+}

@@ -3,12 +3,13 @@ package fr.uit.univparis8.tpair.tpair1;
 import fr.uit.univparis8.tpair.tpair1.model.User;
 import fr.uit.univparis8.tpair.tpair1.service.AuthService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("/Register")
+// DÉSACTIVÉ : TP3 utilise une API REST pure, pas de servlets
+// @WebServlet("/Register")
 public class RegisterServlet extends HttpServlet {
 
     private final AuthService authService = new AuthService();
@@ -32,15 +33,13 @@ public class RegisterServlet extends HttpServlet {
         try {
             User u = authService.register(username, email, password);
 
+            // Créer la session et y ajouter les infos utilisateur
             HttpSession session = req.getSession(true);
             session.setAttribute("user", u.getUsername());
             session.setAttribute("userId", u.getId());
-
-            resp.sendRedirect("AnnonceList");
             session.setMaxInactiveInterval(30 * 60); // 30 minutes
-            session.setAttribute("user", u.getUsername());
-            session.setAttribute("userId", u.getId());
 
+            // Rediriger vers la liste des annonces
             resp.sendRedirect(req.getContextPath() + "/AnnonceList");
 
         } catch (IllegalArgumentException e) {

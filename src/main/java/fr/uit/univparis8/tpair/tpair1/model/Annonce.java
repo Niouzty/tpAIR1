@@ -50,6 +50,9 @@ public class Annonce {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @Version
+    private Long version;
+
     public Annonce() {}
 
     // getters/setters
@@ -79,4 +82,7 @@ public class Annonce {
 
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
+
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 }

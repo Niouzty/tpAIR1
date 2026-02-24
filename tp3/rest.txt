@@ -1,0 +1,100 @@
+Samir MILOUDI
+samir.miloudi@gmail.com
+
+🌍 Qu’est-ce que REST ?
+REST est un style architectural pour concevoir des systèmes distribués, notamment
+des API Web.
+
+👉 Concrètement :
+Il ne s’agit pas d’une technologie, ni d’un framework, mais d’un ensemble de principes
+décrivant comment structurer une API HTTP
+
+🧠 Les principes fondamentaux de REST
+1. Les ressources
+Une API REST manipule des ressources, identifiées par des URI.
+Exemples :
+●
+
+/api/annonces
+
+●
+
+/api/annonces/12
+
+●
+
+/api/users/3
+
+👉 Une ressource représente une entité métier.
+
+🧠 Les principes fondamentaux de REST
+2.Les verbes HTTP
+REST s’appuie sur les verbes HTTP standards :
+
+Exemple :
+●
+●
+
+GET /api/annonces → liste
+POST /api/annonces → création
+
+🧠 Les principes fondamentaux de REST
+3. Stateless (sans état serveur)
+Chaque requête doit contenir toutes les informations nécessaires pour être traitée.
+Le serveur :
+●
+
+ne conserve pas de session HTTP obligatoire
+
+●
+
+ne dépend pas d’un état précédent
+
+👉 Cela améliore la scalabilité.
+
+🧠 Les principes fondamentaux de REST
+4. Représentations
+Les ressources sont échangées sous forme de représentations, souvent :
+●
+●
+
+JSON
+XML (moins courant aujourd’hui)
+
+Exemple JSON :
+
+🧠 Les principes fondamentaux de REST
+🎯 Pourquoi REST est central aujourd’hui ?
+●
+●
+●
+●
+
+Séparation Frontend / Backend
+Architecture microservices
+Applications mobiles
+Intégrations inter-systèmes
+
+📌 REST est devenu le standard de facto des APIs modernes.
+
+On passe à la pratique TP
+Ce TP n’a pas pour objectif :
+●
+●
+
+de masquer la complexité,
+ni de “faire marcher vite”.
+
+Il a pour objectif de :
+●
+●
+●
+
+comprendre ce que qu’apporte REST,
+apprendre à diagnostiquer des problèmes réels,
+acquérir des réflexes professionnels utiles en entreprise.
+
+💡 La douleur fait partie de l’apprentissage,
+elle est pédagogique.
+
+

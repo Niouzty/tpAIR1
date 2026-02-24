@@ -4,12 +4,13 @@ package fr.uit.univparis8.tpair.tpair1;
 import fr.uit.univparis8.tpair.tpair1.model.User;
 import fr.uit.univparis8.tpair.tpair1.service.AuthService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("/Login")
+// DÉSACTIVÉ : TP3 utilise une API REST pure, pas de servlets
+// @WebServlet("/Login")
 public class LoginServlet extends HttpServlet{
     private final AuthService authService = new AuthService();
 
