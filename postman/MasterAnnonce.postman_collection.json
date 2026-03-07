@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "MasterAnnonce TP4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "url": {"raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"]},
+        "body": {"mode":"raw","raw":"{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"pass1234\"\n}"}
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "url": {"raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"]},
+        "body": {"mode":"raw","raw":"{\n  \"username\": \"alice\",\n  \"password\": \"pass1234\"\n}"}
+      },
+      "response": []
+    },
+    {
+      "name": "Annonces - List",
+      "request": {
+        "method": "GET",
+        "header": [{"key":"Authorization","value":"Bearer {{token}}"}],
+        "url": {"raw": "{{baseUrl}}/api/annonces?q=foo&status=PUBLISHED&page=1&size=10", "host": ["{{baseUrl}}"], "path": ["api","annonces"], "query": [
+          {"key":"q","value":"foo"},
+          {"key":"status","value":"PUBLISHED"},
+          {"key":"page","value":"1"},
+          {"key":"size","value":"10"}
+        ]}
+      }
+    }
+  ]
+}

@@ -15,6 +15,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     @NotBlank
     @Column(nullable = false)
     private String label;
@@ -23,10 +26,11 @@ public class Category {
     private List<Annonce> annonces = new ArrayList<>();
 
     public Category() {}
-
-    // getters/setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 
     public String getLabel() { return label; }
     public void setLabel(String label) { this.label = label; }

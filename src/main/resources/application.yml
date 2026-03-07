@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    username: postgres
+    password: Exauce1964
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: "MasterAnnonce"
+        globally_quoted_identifiers: true
+        format_sql: true
+    show-sql: true
+
+  jpa.open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    probes:
+      enabled: true
+    db:
+      enabled: true
+
+# JWT secret : override via APP_JWT_SECRET in prod
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET:changeme-secret-key-32-bytes-minimum-please-change}
+    expiration-ms: 7200000
+
+# Swagger UI at /swagger-ui.html
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

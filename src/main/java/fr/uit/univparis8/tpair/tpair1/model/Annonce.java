@@ -1,5 +1,6 @@
 package fr.uit.univparis8.tpair.tpair1.model;
 
+import fr.uit.univparis8.tpair.tpair1.enums.AnnonceStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ public class Annonce {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Version
+    private Long version;
 
     @NotBlank
     @Size(max = 64)
@@ -51,10 +55,11 @@ public class Annonce {
     private Category category;
 
     public Annonce() {}
-
-    // getters/setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
